@@ -30,7 +30,8 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
 
         TextView tvCaption = (TextView)convertView.findViewById(R.id.tvCaption);
         ImageView imgPhoto = (ImageView)convertView.findViewById(R.id.imgPhoto);
-        tvCaption.setText(photo.caption);
+        if(photo.caption != null)
+            tvCaption.setText(photo.caption);
         imgPhoto.getLayoutParams().height = photo.imageHeight;
         // reset image from the recycled view.
         imgPhoto.setImageResource(0);

@@ -1,5 +1,6 @@
 package exercise.lniu.instagramclient;
 
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,10 +26,24 @@ public class ImagesActivity extends ActionBarActivity {
     private ArrayList<InstagramPhoto> photos;
     private ListView lvPhotos;
     private InstagramPhotosAdapter photosAdapter;
+    private SwipeRefreshLayout swipeContainer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_images);
+
+        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                fetchPopularPhotos();
+            }
+        });
+        // Configure the refreshing colors
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
         photos = new ArrayList<InstagramPhoto>();
 
         lvPhotos = (ListView)findViewById(R.id.lvPhotos);
@@ -60,6 +75,7 @@ public class ImagesActivity extends ActionBarActivity {
                         photos.add(photo);
                     }
                     photosAdapter.notifyDataSetChanged();
+                    swipeContainer.setRefreshing(false);
                 }catch (JSONException e) {
                     e.printStackTrace();
                 }
