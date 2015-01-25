@@ -19,7 +19,7 @@ public class InstagramPhoto {
         InstagramPhoto photo = new InstagramPhoto();
         photo.username = jsonObject.getJSONObject("user").getString("username");
 
-        if(jsonObject.getJSONObject("caption") != null && jsonObject.getJSONObject("caption").getString("text") != null) {
+        if(jsonObject.optJSONObject("caption") != null) {
             photo.caption = jsonObject.getJSONObject("caption").getString("text");
         }
         photo.profileImgUrl = jsonObject.getJSONObject("user").getString("profile_picture");
