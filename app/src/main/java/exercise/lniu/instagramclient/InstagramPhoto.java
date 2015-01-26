@@ -11,6 +11,7 @@ public class InstagramPhoto {
     public String caption;
     public String imageUrl;
     public int imageHeight;
+    public int imageWidth;
     public int likesCount;
 
     public String profileImgUrl;
@@ -25,6 +26,7 @@ public class InstagramPhoto {
         photo.profileImgUrl = jsonObject.getJSONObject("user").getString("profile_picture");
         photo.imageUrl = jsonObject.getJSONObject("images").getJSONObject("standard_resolution").getString("url");
         photo.imageHeight = jsonObject.getJSONObject("images").getJSONObject("standard_resolution").getInt("height");
+        photo.imageWidth = jsonObject.getJSONObject("images").getJSONObject("standard_resolution").getInt("width");
         photo.likesCount = jsonObject.getJSONObject("likes").getInt("count");
         return photo;
     }

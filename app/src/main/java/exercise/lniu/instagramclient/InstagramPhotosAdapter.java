@@ -2,9 +2,12 @@ package exercise.lniu.instagramclient;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Point;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,6 +17,7 @@ import com.makeramen.RoundedTransformationBuilder;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 /**
@@ -37,13 +41,35 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
         ImageView imgPhoto = (ImageView)convertView.findViewById(R.id.imgPhoto);
         ImageView roundImgUser = (ImageView)convertView.findViewById(R.id.roundImgUser);
         TextView tvUser = (TextView)convertView.findViewById(R.id.tvUser);
+        TextView tvLikes = (TextView)convertView.findViewById(R.id.tvLikes);
+        TextView tvTime = (TextView)convertView.findViewById(R.id.tvTime);
 
         tvUser.setText(photo.username);
+
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        tvLikes.setText(String.format("%s likes", formatter.format(photo.likesCount)));
+
         if(photo.caption != null)
             tvCaption.setText(photo.caption);
-        imgPhoto.getLayoutParams().height = photo.imageHeight;
+
+        WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int screenWidth = size.x;
+
+        final int showImgHeight = (int)(screenWidth * (photo.imageHeight / photo.imageWidth * 1.0f));
+        final int showImgWidth = screenWidth;
+
+        imgPhoto.getLayoutParams().height = showImgHeight;
+        imgPhoto.getLayoutParams().width = showImgWidth;
+
+
         // reset image from the recycled view.
         imgPhoto.setImageResource(0);
+        Picasso.with(getContext()).load(photo.imageUrl).resize(showImgWidth, showImgHeight).into(imgPhoto);
+
+
         roundImgUser.setImageResource(0);
         // Background: Ask for the photo to be added in the imageView on the photo url.
         Transformation transformation = new RoundedTransformationBuilder()
@@ -58,7 +84,7 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
                 .transform(new CircleTransform())
                 .into(roundImgUser);
        // Picasso.with(getContext()).load(photo.profileImgUrl).into(roundImgUser);
-        Picasso.with(getContext()).load(photo.imageUrl).into(imgPhoto);
+
         return convertView;
     }
 }
