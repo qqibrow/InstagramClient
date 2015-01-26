@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AbsListView;
 import android.widget.ListView;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -39,6 +40,7 @@ public class ImagesActivity extends ActionBarActivity {
                 fetchPopularPhotos();
             }
         });
+
         // Configure the refreshing colors
         swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light,
@@ -49,6 +51,21 @@ public class ImagesActivity extends ActionBarActivity {
         lvPhotos = (ListView)findViewById(R.id.lvPhotos);
         photosAdapter = new InstagramPhotosAdapter(this, photos);
         lvPhotos.setAdapter(photosAdapter);
+
+        lvPhotos.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                int topRowVerticalPosition =
+                        (lvPhotos == null || lvPhotos.getChildCount() == 0) ?
+                                0 : lvPhotos.getChildAt(0).getTop();
+                swipeContainer.setEnabled(firstVisibleItem == 0 && topRowVerticalPosition >= 0);
+            }
+        });
         fetchPopularPhotos();
     }
 

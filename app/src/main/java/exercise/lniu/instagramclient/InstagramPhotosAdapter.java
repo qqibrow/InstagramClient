@@ -74,8 +74,8 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
         // Background: Ask for the photo to be added in the imageView on the photo url.
         Transformation transformation = new RoundedTransformationBuilder()
                 .borderColor(Color.BLACK)
-                .borderWidthDp(3)
-                .cornerRadiusDp(30)
+                .borderWidthDp(2)
+                .cornerRadiusDp(20)
                 .oval(false)
                 .build();
 
