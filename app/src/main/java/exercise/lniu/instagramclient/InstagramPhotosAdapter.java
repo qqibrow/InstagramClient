@@ -3,6 +3,8 @@ package exercise.lniu.instagramclient;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,6 +46,11 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
         TextView tvLikes = (TextView)convertView.findViewById(R.id.tvLikes);
         TextView tvTime = (TextView)convertView.findViewById(R.id.tvTime);
 
+        long currentTime = System.currentTimeMillis();
+        tvTime.setText(DateUtils.getRelativeTimeSpanString(photo.timeStamp*1000,
+                currentTime,
+                DateUtils.SECOND_IN_MILLIS, DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR ));
+
         tvUser.setText(photo.username);
 
         DecimalFormat formatter = new DecimalFormat("#,###");
@@ -66,8 +73,10 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
 
 
         // reset image from the recycled view.
+        // TODO(lniu) Bug: image not dynamically scale. Sometimes there are white blank around image.
         imgPhoto.setImageResource(0);
-        Picasso.with(getContext()).load(photo.imageUrl).resize(showImgWidth, showImgHeight).into(imgPhoto);
+        final int maxDimention = Math.max(showImgHeight, showImgWidth);
+        Picasso.with(getContext()).load(photo.imageUrl).into(imgPhoto);
 
 
         roundImgUser.setImageResource(0);

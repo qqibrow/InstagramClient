@@ -1,5 +1,7 @@
 package exercise.lniu.instagramclient;
 
+import android.util.Log;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -13,6 +15,7 @@ public class InstagramPhoto {
     public int imageHeight;
     public int imageWidth;
     public int likesCount;
+    public long timeStamp;
 
     public String profileImgUrl;
 
@@ -28,6 +31,7 @@ public class InstagramPhoto {
         photo.imageHeight = jsonObject.getJSONObject("images").getJSONObject("standard_resolution").getInt("height");
         photo.imageWidth = jsonObject.getJSONObject("images").getJSONObject("standard_resolution").getInt("width");
         photo.likesCount = jsonObject.getJSONObject("likes").getInt("count");
+        photo.timeStamp = jsonObject.getLong("created_time");
         return photo;
     }
 }

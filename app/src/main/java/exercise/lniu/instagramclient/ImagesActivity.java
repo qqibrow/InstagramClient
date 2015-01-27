@@ -1,5 +1,6 @@
 package exercise.lniu.instagramclient;
 
+import android.graphics.drawable.ColorDrawable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -32,6 +33,8 @@ public class ImagesActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_images);
+
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0xFF3F9FE0));
 
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -76,12 +79,9 @@ public class ImagesActivity extends ActionBarActivity {
         String popularUrl = "https://api.instagram.com/v1/media/popular?client_id=" + CLIENT_ID;
         client.get(popularUrl, new JsonHttpResponseHandler() {
             // Define success and failure callbacks.
-
-
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                // Log.i("INFO", response.toString());
-                JSONArray photosJson = null;
+                   JSONArray photosJson = null;
                 try {
                     photos.clear();
                     photosJson = response.getJSONArray("data");
@@ -111,7 +111,7 @@ public class ImagesActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_images, menu);
+       // getMenuInflater().inflate(R.menu.menu_images, menu);
         return true;
     }
 
@@ -120,12 +120,12 @@ public class ImagesActivity extends ActionBarActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+//        int id = item.getItemId();
+//
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }
